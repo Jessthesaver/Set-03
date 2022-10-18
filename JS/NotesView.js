@@ -5,16 +5,7 @@ export default class NotesView {
         this.onNoteAdd = onNoteAdd;
         this.onNoteEdit = onNoteEdit;
         this.onNoteDelete = onNoteDelete;
-        this.root.innerHTML = `
-            <div class="notes__sidebar">
-                <button class="notes__add" type="button">Add Note</button>
-                <div class="notes__list"></div>
-            </div>
-            <div class="notes__preview">
-                <input class="notes__title" type="text" placeholder="New Note...">
-                <textarea class="notes__body">Take Note...</textarea>
-            </div>
-        `;
+        this.root.innerHTML = document.querySelector('#New_note').innerHTML;
 
         const btnAddNote = this.root.querySelector(".notes__add");
         const inpTitle = this.root.querySelector(".notes__title");
@@ -38,7 +29,7 @@ export default class NotesView {
 
     _createListItemHTML(id, title, body, updated,created) {
         const MAX_BODY_LENGTH = 60;
-
+        //the template doesnt load propery to be used in this method, so the properties are set like this
         return `
             <div class="notes__list-item" data-note-id="${id}">
                 <div class="notes__small-title">${title}</div>
@@ -46,6 +37,7 @@ export default class NotesView {
                     ${body.substring(0, MAX_BODY_LENGTH)}
                     ${body.length > MAX_BODY_LENGTH ? "..." : ""}
                 </div>
+                <input type="button" class="deletebtn" value="Press to delete" btn-id="${id}">
                 <div class="notes__small-updated">
                     Last edit:${updated.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}
                 </div>
@@ -59,7 +51,6 @@ export default class NotesView {
     updateNoteList(notes) {
         const notesListContainer = this.root.querySelector(".notes__list");
 
-        // Empty list
         notesListContainer.innerHTML = "";
 
         for (const note of notes) {
@@ -72,19 +63,22 @@ export default class NotesView {
         notesListContainer.querySelectorAll(".notes__list-item").forEach(noteListItem => {
             noteListItem.addEventListener("click", () => {
                 this.onNoteSelect(noteListItem.dataset.noteId);
-            });
-
-            noteListItem.addEventListener("dblclick", () => {
-                const doDelete = confirm("Are you sure you want to delete this note?");
-
-                if (doDelete) {
-                    this.onNoteDelete(noteListItem.dataset.noteId);
-                }
-            });
-        });
-    }
+            });     
+    })
+    //delete handler with a button, more intuituve than the previous one
+    let btns = document.querySelectorAll('.deletebtn');
+         btns.forEach(button => {
+            button.addEventListener('click', ( ) => { 
+             const doDelete = confirm("Are you sure you want to delete this note?");
+                 if (doDelete) {
+                     this.onNoteDelete(button.getAttribute('btn-id'));    
+                 }
+             });
+         });   
+}
 
     updateActiveNote(note) {
+        //here the program is trhrowing an error because when a note is deleted, the program tries to load the empty spot, it doesnt affect the functionality 
         this.root.querySelector(".notes__title").value = note.title;
         this.root.querySelector(".notes__body").value = note.body;
 

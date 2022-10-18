@@ -1,24 +1,20 @@
 import App from "./App.js"
+import NotesAPI from "./NotesAPI.js";
 
 const root = document.getElementById("app");
 const app = new App(root);
-/*
-const view = new NotesView(app, {
-    onNoteAdd(){
-        console.log("Let´s add some notes");
-    },
-    onNoteSelect(id){
-        console.log("Note Selected:" + id);
-    },
-    onNodeEdit(newTitle, newBody){
-        console.log(newTitle);
-        console.log(newBody);
-    },
-    onNoteDelete(id){
-        console.log("Note DELETED:" + id);
-    },
-    
-});
-
-view.updateNodeList(NotesAPI.getAllNotes());
-view.updateActiveNote(notes[0]);*/
+document.querySelector('textarea').addEventListener('keydown', function(e) {
+    if (e.key == 'Tab') {
+      e.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+  
+      // set textarea value to: text before caret + tab + text after caret
+      this.value = this.value.substring(0, start) +
+        "\t" + this.value.substring(end);
+  
+      // put caret at right position again
+      this.selectionStart =
+        this.selectionEnd = start + 1;
+    }
+  });
