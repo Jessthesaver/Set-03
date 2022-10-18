@@ -24,6 +24,25 @@
             <input class="notes__title" type="text" placeholder="Enter a title...">
             <textarea class="notes__body">This is the note body</textarea>
         </div> -->
+        <template id="New_note">
+            <div class="notes__sidebar">
+            <button class="notes__add" type="button">Add Note</button>
+            <div class="notes__list"></div>
+        </div>
+        <div class="notes__preview">
+            <input class="notes__title" type="text" placeholder="New Note...">
+            <textarea class="notes__body">Take Note...</textarea>    
+        </div>
+    </template>
+    <template id="Note_miniature">
+        <div class="notes__list-item" >
+            <div class="notes__small-title"></div>
+            <div class="notes__small-body"></div>
+            <input type="button" class="deletebtn" value="Press to delete">
+            <div class="notes__small-updated"></div>
+            <div class="notes__small-updated"></div>
+        </div>
+    </template>
     </div>
     <script src="./js/main.js" type="module"></script>
 </body>
