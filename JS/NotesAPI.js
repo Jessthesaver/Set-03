@@ -1,12 +1,12 @@
-export default class NotesAPI {
-    static getAllNotes() {
+ const NotesAPI ={
+    getAllNotes() {
         const notes = JSON.parse(localStorage.getItem("notesapp-notes") || "[]");
         return notes.sort((a, b) => {
             return new Date(a.updated) > new Date(b.updated) ? -1 : 1;
         });
-    }
+    },
 
-    static saveNote(noteToSave) {
+    saveNote(noteToSave) {
         const notes = NotesAPI.getAllNotes();
         const existing = notes.find(note => note.id == noteToSave.id);
         // Edit/Update
@@ -21,12 +21,14 @@ export default class NotesAPI {
         }
 
         localStorage.setItem("notesapp-notes", JSON.stringify(notes));
-    }
+    },
 
-    static deleteNote(id) {
+    deleteNote(id) {
         const notes = NotesAPI.getAllNotes();
         const newNotes = notes.filter(note => note.id != id);
 
         localStorage.setItem("notesapp-notes", JSON.stringify(newNotes));
     }
 }
+
+export default NotesAPI

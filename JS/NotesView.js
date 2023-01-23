@@ -29,8 +29,30 @@ export default class NotesView {
 
     _createListItemHTML(id, title, body, updated,created) {
         const MAX_BODY_LENGTH = 60;
-        //the template doesnt load propery to be used in this method, so the properties are set like this
-        return `
+
+        const template = document.getElementById('Note_miniature')
+        console.log(template)
+        const clone = template.content.cloneNode(true)
+        let note= clone.querySelector('.notes__list-item')
+        note.id=id
+        let notetitle=clone.querySelector('.notes__small-title')
+        notetitle.innerText=title
+        let notebody = clone.querySelector('.notes__small-body')
+        notebody.innerText=`
+            ${body.substring(0, MAX_BODY_LENGTH)}
+            ${body.length > MAX_BODY_LENGTH ? "..." : ""}
+            `
+        let button= clone.querySelector('.deletebtn')
+        button.setAttribute('btn-id', id)
+        let edit = clone.querySelector('.notes__small-updated')
+        edit.innerText= `
+            Last edit:${updated.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}
+            Creation date:${created.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}
+            `
+
+        console.log(clone.innerHTML)
+        return clone
+        /*`
             <div class="notes__list-item" data-note-id="${id}">
                 <div class="notes__small-title">${title}</div>
                 <div class="notes__small-body">
@@ -45,7 +67,7 @@ export default class NotesView {
                     Creation date:${created.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}
                 </div>
             </div>
-        `;
+        `;*/
     }
 
     updateNoteList(notes) {
@@ -55,8 +77,9 @@ export default class NotesView {
 
         for (const note of notes) {
             const html = this._createListItemHTML(note.id, note.title, note.body, new Date(note.updated),new Date(note.created));
-
-            notesListContainer.insertAdjacentHTML("beforeend", html);
+            console.log(html)
+            //notesListContainer.insertAdjacentHTML("beforeend", html);
+            notesListContainer.appendChild(html)
         }
 
         // Add select/delete events for each list item
@@ -78,7 +101,7 @@ export default class NotesView {
 }
 
     updateActiveNote(note) {
-        //here the program is trhrowing an error because when a note is deleted, the program tries to load the empty spot, it doesnt affect the functionality 
+        //here the program is throwing an error because when a note is deleted, the program tries to load the empty spot, it doesnt affect the functionality 
         this.root.querySelector(".notes__title").value = note.title;
         this.root.querySelector(".notes__body").value = note.body;
 
